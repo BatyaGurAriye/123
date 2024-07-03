@@ -1,0 +1,28 @@
+name: Python Linting
+
+on: push
+
+jobs:
+  lint-python:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'  # Specify the Python version.
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install ruff
+
+    - name: Run ruff with fix
+      run: ruff check . --fix
+
+    - name: Run unit tests
+      run: |
+        python -m unittest discover -s . -p 'test_lint.py'
